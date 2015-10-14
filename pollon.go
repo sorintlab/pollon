@@ -178,13 +178,13 @@ func (p *Proxy) confCheck(errCh chan error, stop chan struct{}) {
 	}
 }
 
-func (p *Proxy) setCheckInterval(checkInterval time.Duration) {
+func (p *Proxy) SetCheckInterval(checkInterval time.Duration) {
 	p.confMutex.Lock()
 	p.config.CheckInterval = checkInterval
 	p.confMutex.Unlock()
 }
 
-func (p *Proxy) setConfig(config *Config) {
+func (p *Proxy) SetConfig(config *Config) {
 	p.confMutex.Lock()
 	p.config = config
 	p.confMutex.Unlock()
