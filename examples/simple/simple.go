@@ -45,7 +45,7 @@ func main() {
 
 	proxyConfig := &pollon.Config{
 		ConfChecker:        &ConfChecker{},
-		CheckInterval:      1 * time.Second,
+		SleepInterval:      1 * time.Second,
 		ExitOnCheckerError: false,
 	}
 	proxy, err := pollon.NewProxy(listener, proxyConfig)

@@ -28,7 +28,7 @@ var log = capnslog.NewPackageLogger("github.com/sorintlab/pollon", "pollon")
 
 const (
 	// min check interval
-	minCheckInterval = 100 * time.Millisecond
+	minSleepInterval = 100 * time.Millisecond
 )
 
 type ConfChecker interface {
@@ -47,7 +47,7 @@ type Proxy struct {
 
 type Config struct {
 	ConfChecker   ConfChecker
-	CheckInterval time.Duration
+	SleepInterval time.Duration
 	// whether to continue or exit if the confChecker returns an error (defaults to false)
 	ExitOnCheckerError bool
 }
@@ -59,8 +59,8 @@ func NewProxy(listener *net.TCPListener, config *Config) (*Proxy, error) {
 	if config.ConfChecker == nil {
 		return nil, fmt.Errorf("confChecker cannot be nil")
 	}
-	if config.CheckInterval < minCheckInterval {
-		config.CheckInterval = minCheckInterval
+	if config.SleepInterval < minSleepInterval {
+		config.SleepInterval = minSleepInterval
 	}
 	return &Proxy{
 		listener:   listener,
@@ -172,15 +172,15 @@ func (p *Proxy) confCheck(errCh chan error, stop chan struct{}) {
 				return
 			}
 			p.confMutex.Lock()
-			c = time.NewTimer(p.config.CheckInterval).C
+			c = time.NewTimer(p.config.SleepInterval).C
 			p.confMutex.Unlock()
 		}
 	}
 }
 
-func (p *Proxy) SetCheckInterval(checkInterval time.Duration) {
+func (p *Proxy) SetSleepInterval(sleepInterval time.Duration) {
 	p.confMutex.Lock()
-	p.config.CheckInterval = checkInterval
+	p.config.SleepInterval = sleepInterval
 	p.confMutex.Unlock()
 }
 
