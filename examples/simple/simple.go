@@ -2,13 +2,20 @@ package main
 
 import (
 	"io/ioutil"
-	"log"
+	stdlog "log"
 	"net"
+	"os"
 	"strings"
 	"time"
 
 	"github.com/sorintlab/pollon"
 )
+
+var log = stdlog.New(os.Stderr, "", stdlog.LstdFlags)
+
+func init() {
+	pollon.SetLogger(log)
+}
 
 func Check(c chan pollon.ConfData) {
 	conf, err := ioutil.ReadFile("./conf")
@@ -60,5 +67,4 @@ func main() {
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
-
 }
