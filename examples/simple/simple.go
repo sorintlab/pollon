@@ -38,7 +38,7 @@ func Check(c chan pollon.ConfData) {
 		return
 	}
 	log.Printf("address: %s", addr)
-	c <- pollon.ConfData{DestAddr: addr}
+	c <- pollon.ConfData{DestAddr: []*net.TCPAddr{addr}}
 }
 
 func main() {
